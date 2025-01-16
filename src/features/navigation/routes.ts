@@ -1,6 +1,6 @@
 import dashboardPage from "../../pages/dashboard";
 import inventoryPage from "../../pages/inventory";
-import warehousesPage from "../../pages/warehouses";
+import warehousePage from "../../pages/warehouse";
 import notFoundPage from "../../pages/404";
 
 const routes = [
@@ -13,8 +13,8 @@ const routes = [
     page: inventoryPage,
   },
   {
-    path: "/warehouses",
-    page: warehousesPage,
+    path: "/warehouse",
+    page: warehousePage,
   },
   {
     path: "*",
