@@ -12,5 +12,8 @@ The **Warehouse Inventory Management System** is a web-based application designe
 - 🔄 **Real-Time Status Updates:** Product availability status updates automatically based on stock quantity.
 
 ## **Tech Stack**  
-- **Frontend:** HTML, CSS (Tailwind CSS), JavaScript  
+- **Frontend:** HTML, CSS (Tailwind CSS), JavaScript / Typescript  
 - **Data Management:** Local Storage
+- **Development Tools:**  
+  - **Vite** for fast and optimized frontend build and development.  
+  - **Bun** as an alternative JavaScript runtime for improved performance. 
