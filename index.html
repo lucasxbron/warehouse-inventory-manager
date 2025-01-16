@@ -8,16 +8,20 @@
   <title>Stockflow</title>
 </head>
 
-<body class="bg-red-100">
+<body class="bg-neutral-800">
   <header>
-    <nav>
+    <nav class="flex justify-between text-white">
+      <ul class="flex gap-2">
+        <li><a href="/">Dashboard</a></li>
+        <li><a href="/inventory">Inventory</a></li>
+        <li><a href="/warehouses">Warehouses</a></li>
+      </ul>
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/contact">Contact</a></li>
+        <li><button id="user">User</button></li>
       </ul>
     </nav>
   </header>
-  <div id="app"></div>
+  <div id="app" class="mt-2"></div>
   <script type="module" src="/src/main.ts"></script>
 </body>
 
