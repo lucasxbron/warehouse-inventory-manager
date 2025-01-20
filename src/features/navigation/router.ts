@@ -12,7 +12,7 @@ async function updateAppContent(appEl: HTMLDivElement) {
   const route =
     routes.find((route) => route.path === currentPath) ||
     routes.find((route) => route.path === "*");
-  content = await route!.page();
+  content = (await route!.page()) || "";
 
   appEl!.innerHTML = content;
 }
