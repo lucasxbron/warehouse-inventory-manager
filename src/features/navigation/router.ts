@@ -2,9 +2,6 @@ import { routes } from "./routes";
 
 /**
  * Updates the content of the application based on the current URL path.
- *
- * @param {HTMLDivElement} appEl - The HTML element where the content will be injected.
- * @returns {Promise<void>} A promise that resolves when the content has been updated.
  */
 // async function updateAppContent(appEl: HTMLDivElement) {
 async function updateAppContent() {
@@ -18,8 +15,8 @@ async function updateAppContent() {
     routes.find((route) => route.path === "*");
   if (route) {
     console.log(route);
+    (await route!.page()) || "";
   }
-  //   content = (await route!.page()) || "";
   // console.log(route);
   // console.log(content);
   //   appEl!.innerHTML = content;
@@ -34,6 +31,7 @@ async function updateAppContent() {
 // function initRouter(appEl: HTMLDivElement) {
 function initRouter() {
   window.addEventListener("load", () => {
+    updateAppContent(appEl!);
     // updateAppContent(appEl!);
   });
 }

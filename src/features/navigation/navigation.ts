@@ -17,7 +17,7 @@ function navigation() {
       const targetPath = (event.target as HTMLAnchorElement).getAttribute(
         "href",
       );
-      console.log(targetPath);
+      // console.log(targetPath);
       history.pushState({}, "", targetPath);
       // updateAppContent(appEl);
       updateAppContent();

@@ -39,7 +39,7 @@ async function inventoryPage() {
       row.className = "hover:bg-gray-50";
       [
         product.name,
-        product.quantity.toString(),
+        (product.quantity ?? 0).toString(),
         product.description,
         `$${(product.price ?? 0).toFixed(2)}`,
         product.status,
