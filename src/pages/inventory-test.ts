@@ -100,7 +100,7 @@ async function inventoryPage() {
   function addProductForm(
     product?: Product,
     index?: number,
-    formRow?: HTMLTableRowElement
+    formRow?: HTMLTableRowElement,
   ) {
     const form = document.createElement("form");
     form.className = "bg-white p-4 rounded shadow-md";
