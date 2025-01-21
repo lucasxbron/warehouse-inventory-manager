@@ -14,7 +14,7 @@ function navigation(appEl: HTMLDivElement) {
     link.addEventListener("click", (event) => {
       event.preventDefault();
       const targetPath = (event.target as HTMLAnchorElement).getAttribute(
-        "href"
+        "href",
       );
       history.pushState({}, "", targetPath);
       updateAppContent(appEl);

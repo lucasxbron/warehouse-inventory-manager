@@ -21,7 +21,14 @@ async function inventoryPage() {
     table.className = "min-w-full bg-white border border-gray-200";
     const headerRow = table.insertRow();
     headerRow.className = "bg-gray-100";
-    ["Product", "Quantity", "Description", "Price", "Status", "Actions"].forEach(text => {
+    [
+      "Product",
+      "Quantity",
+      "Description",
+      "Price",
+      "Status",
+      "Actions",
+    ].forEach((text) => {
       const cell = headerRow.insertCell();
       cell.className = "px-4 py-2 border";
       cell.textContent = text;
@@ -30,15 +37,21 @@ async function inventoryPage() {
     products.forEach((product, index) => {
       const row = table.insertRow();
       row.className = "hover:bg-gray-50";
-      [product.name, product.quantity, product.description, `$${(product.price ?? 0).toFixed(2)}`, product.quantity > 0 ? "Available" : "Not Available"].forEach(value => {
+      [
+        product.name,
+        product.quantity,
+        product.description,
+        `$${(product.price ?? 0).toFixed(2)}`,
+        product.quantity > 0 ? "Available" : "Not Available",
+      ].forEach((value) => {
         const cell = row.insertCell();
         cell.className = "px-4 py-2 border";
-        cell.textContent = value != null ? value.toString() : '';
+        cell.textContent = value != null ? value.toString() : "";
       });
 
       const actionsCell = row.insertCell();
       actionsCell.className = "px-4 py-2 border";
-      
+
       const editButton = document.createElement("button");
       editButton.className = "bg-green-500 text-white px-2 py-1 rounded mr-2";
       editButton.textContent = "Edit";
@@ -53,7 +66,8 @@ async function inventoryPage() {
       actionsCell.appendChild(editButton);
 
       const addToStockButton = document.createElement("button");
-      addToStockButton.className = "bg-blue-500 text-white px-2 py-1 rounded mr-2";
+      addToStockButton.className =
+        "bg-blue-500 text-white px-2 py-1 rounded mr-2";
       addToStockButton.textContent = "Add to stock";
       addToStockButton.addEventListener("click", () => {
         if (!document.querySelector("form")) {
@@ -80,10 +94,14 @@ async function inventoryPage() {
     return table;
   }
 
-  function addProductForm(product?: Product, index?: number, formRow?: HTMLTableRowElement) {
+  function addProductForm(
+    product?: Product,
+    index?: number,
+    formRow?: HTMLTableRowElement,
+  ) {
     const form = document.createElement("form");
     form.className = "bg-white p-4 rounded shadow-md";
-    ["name", "quantity", "description", "price"].forEach(field => {
+    ["name", "quantity", "description", "price"].forEach((field) => {
       const input = document.createElement("input");
       input.name = field;
       input.placeholder = field.charAt(0).toUpperCase() + field.slice(1);
@@ -121,7 +139,7 @@ async function inventoryPage() {
     });
     form.appendChild(cancelButton);
 
-    form.addEventListener("submit", event => {
+    form.addEventListener("submit", (event) => {
       event.preventDefault();
       const formData = new FormData(form);
       const newProduct: Product = {
@@ -129,7 +147,10 @@ async function inventoryPage() {
         description: formData.get("description") as string,
         price: parseFloat(formData.get("price") as string),
         quantity: parseInt(formData.get("quantity") as string, 10),
-        status: parseInt(formData.get("quantity") as string, 10) > 0 ? "Available" : "Not Available",
+        status:
+          parseInt(formData.get("quantity") as string, 10) > 0
+            ? "Available"
+            : "Not Available",
       };
 
       const products = getProductsFromLocalStorage();
@@ -157,7 +178,7 @@ async function inventoryPage() {
   function addStockForm(product: Product, formRow: HTMLTableRowElement) {
     const form = document.createElement("form");
     form.className = "bg-white p-4 rounded shadow-md";
-    
+
     const input = document.createElement("input");
     input.name = "quantity";
     input.placeholder = "Quantity to add";
@@ -181,14 +202,14 @@ async function inventoryPage() {
     });
     form.appendChild(cancelButton);
 
-    form.addEventListener("submit", event => {
+    form.addEventListener("submit", (event) => {
       event.preventDefault();
       const formData = new FormData(form);
       const quantityToAdd = parseInt(formData.get("quantity") as string, 10);
       if (!isNaN(quantityToAdd) && quantityToAdd > 0) {
         product.quantity += quantityToAdd;
         const products = getProductsFromLocalStorage();
-        const productIndex = products.findIndex(p => p.name === product.name);
+        const productIndex = products.findIndex((p) => p.name === product.name);
         if (productIndex !== -1) {
           products[productIndex].quantity = product.quantity;
         }
@@ -197,7 +218,9 @@ async function inventoryPage() {
         if (existingTable) {
           document.body.removeChild(existingTable);
         }
-        document.body.appendChild(createProductTable(getProductsFromLocalStorage()));
+        document.body.appendChild(
+          createProductTable(getProductsFromLocalStorage()),
+        );
         formRow.remove();
       } else {
         alert("Invalid quantity");
