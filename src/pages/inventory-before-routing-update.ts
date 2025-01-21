@@ -39,10 +39,10 @@ async function inventoryPage() {
       row.className = "hover:bg-gray-50";
       [
         product.name,
-        product.quantity.toString(),
+        product.quantity,
         product.description,
         `$${(product.price ?? 0).toFixed(2)}`,
-        product.status,
+        product.quantity > 0 ? "Available" : "Not Available",
       ].forEach((value) => {
         const cell = row.insertCell();
         cell.className = "px-4 py-2 border";
@@ -85,11 +85,8 @@ async function inventoryPage() {
       deleteButton.addEventListener("click", () => {
         products.splice(index, 1);
         saveProductsToLocalStorage(products);
-        const app = document.getElementById("app");
-        if (app) {
-          app.removeChild(table);
-          app.appendChild(createProductTable(products));
-        }
+        document.body.removeChild(table);
+        document.body.appendChild(createProductTable(products));
       });
       actionsCell.appendChild(deleteButton);
     });
@@ -164,13 +161,10 @@ async function inventoryPage() {
       }
       saveProductsToLocalStorage(products);
       const existingTable = document.querySelector("table");
-      const app = document.getElementById("app");
-      if (existingTable && app) {
-        app.removeChild(existingTable);
+      if (existingTable) {
+        document.body.removeChild(existingTable);
       }
-      if (app) {
-        app.appendChild(createProductTable(products));
-      }
+      document.body.appendChild(createProductTable(products));
       if (formRow) {
         formRow.remove();
       } else {
@@ -221,13 +215,12 @@ async function inventoryPage() {
         }
         saveProductsToLocalStorage(products);
         const existingTable = document.querySelector("table");
-        const app = document.getElementById("app");
-        if (existingTable && app) {
-          app.removeChild(existingTable);
+        if (existingTable) {
+          document.body.removeChild(existingTable);
         }
-        if (app) {
-          app.appendChild(createProductTable(getProductsFromLocalStorage()));
-        }
+        document.body.appendChild(
+          createProductTable(getProductsFromLocalStorage()),
+        );
         formRow.remove();
       } else {
         alert("Invalid quantity");
@@ -237,7 +230,7 @@ async function inventoryPage() {
     return form;
   }
 
-  function renderPage() {
+  document.addEventListener("DOMContentLoaded", () => {
     const products = getProductsFromLocalStorage();
 
     const addButton = document.createElement("button");
@@ -252,21 +245,8 @@ async function inventoryPage() {
       }
     });
 
-    const app = document.getElementById("app");
-    if (app) {
-      app.innerHTML = ""; // Clear previous content
-      app.appendChild(addButton);
-      app.appendChild(table);
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0)); // Ensure DOM is fully loaded
-    renderPage();
-  });
-
-  window.addEventListener("popstate", () => {
-    renderPage();
+    document.body.appendChild(addButton);
+    document.body.appendChild(table);
   });
 }
 

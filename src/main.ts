@@ -5,9 +5,11 @@ import "./css/index.css";
 import { navigation } from "./features/navigation/navigation";
 import { initRouter } from "./features/navigation/router";
 
-const appEl = document.querySelector<HTMLDivElement>("#app");
+// const appEl = document.querySelector<HTMLDivElement>("#app");
 
-initRouter(appEl!);
-navigation(appEl!);
+// initRouter(appEl!);
+// navigation(appEl!);
+initRouter();
+navigation();
 
 // LOGIN

@@ -9,15 +9,18 @@ const navLinksElements = document.querySelectorAll("a");
  *
  * @param {HTMLDivElement} appEl - The main application container element.
  */
-function navigation(appEl: HTMLDivElement) {
+// function navigation(appEl: HTMLDivElement) {
+function navigation() {
   navLinksElements.forEach((link) => {
     link.addEventListener("click", (event) => {
       event.preventDefault();
       const targetPath = (event.target as HTMLAnchorElement).getAttribute(
         "href",
       );
+      console.log(targetPath);
       history.pushState({}, "", targetPath);
-      updateAppContent(appEl);
+      // updateAppContent(appEl);
+      updateAppContent();
     });
   });
 }

@@ -6,15 +6,23 @@ import { routes } from "./routes";
  * @param {HTMLDivElement} appEl - The HTML element where the content will be injected.
  * @returns {Promise<void>} A promise that resolves when the content has been updated.
  */
-async function updateAppContent(appEl: HTMLDivElement) {
+// async function updateAppContent(appEl: HTMLDivElement) {
+async function updateAppContent() {
   const currentPath = window.location.pathname;
-  let content = "";
+  // let content = "";
+  // const route =
+  //   routes.find((route) => route.path === currentPath) ||
+  //   routes.find((route) => route.path === "*");
   const route =
     routes.find((route) => route.path === currentPath) ||
     routes.find((route) => route.path === "*");
-  content = (await route!.page()) || "";
-
-  appEl!.innerHTML = content;
+  if (route) {
+    console.log(route);
+  }
+  //   content = (await route!.page()) || "";
+  // console.log(route);
+  // console.log(content);
+  //   appEl!.innerHTML = content;
 }
 
 /**
@@ -23,9 +31,10 @@ async function updateAppContent(appEl: HTMLDivElement) {
  *
  * @param appEl - The HTMLDivElement that represents the main application element.
  */
-function initRouter(appEl: HTMLDivElement) {
+// function initRouter(appEl: HTMLDivElement) {
+function initRouter() {
   window.addEventListener("load", () => {
-    updateAppContent(appEl!);
+    // updateAppContent(appEl!);
   });
 }
 
