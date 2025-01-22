@@ -1,15 +1,17 @@
 import "./css/index.css";
-// import typescriptLogo from './typescript.svg'
-// import viteLogo from '/vite.svg'
+import users from "./data/users/login.json";
+import { navigateTo } from "./features/navigation/router";
 
-import { navigation } from "./features/navigation/navigation";
-import { initRouter } from "./features/navigation/router";
+const initializeApp = () => {
+  // Load the header dynamically
+  // loadHeader();
 
-// const appEl = document.querySelector<HTMLDivElement>("#app");
+  // Load the initial content based on the current URL
+  navigateTo(window.location.pathname);
+};
 
-// initRouter(appEl!);
-// navigation(appEl!);
-initRouter();
-navigation();
+initializeApp();
 
-// LOGIN
+// window.addEventListener("popstate", () => {
+//   navigateTo(window.location.pathname);
+// });
