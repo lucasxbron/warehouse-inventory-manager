@@ -1,297 +1,112 @@
-// async function inventoryPage() {
-//   interface Product {
-//     name: string;
-//     description: string;
-//     price: number;
-//     quantity: number;
-//     status: string;
-//   }
-
-//   function getProductsFromLocalStorage(): Product[] {
-//     const products = localStorage.getItem("products");
-//     return products ? JSON.parse(products) : [];
-//   }
-
-//   function saveProductsToLocalStorage(products: Product[]) {
-//     localStorage.setItem("products", JSON.stringify(products));
-//   }
-
-//   function createProductTable(products: Product[]) {
-//     const table = document.createElement("table");
-//     table.className = "min-w-full bg-white border border-gray-200";
-//     const headerRow = table.insertRow();
-//     headerRow.className = "bg-gray-100";
-//     [
-//       "Product",
-//       "Quantity",
-//       "Description",
-//       "Price",
-//       "Status",
-//       "Actions",
-//     ].forEach((text) => {
-//       const cell = headerRow.insertCell();
-//       cell.className = "px-4 py-2 border";
-//       cell.textContent = text;
-//     });
-
-//     products.forEach((product, index) => {
-//       const row = table.insertRow();
-//       row.className = "hover:bg-gray-50";
-//       [
-//         product.name,
-//         (product.quantity ?? 0).toString(),
-//         product.description,
-//         `$${(product.price ?? 0).toFixed(2)}`,
-//         product.status,
-//       ].forEach((value) => {
-//         const cell = row.insertCell();
-//         cell.className = "px-4 py-2 border";
-//         cell.textContent = value != null ? value.toString() : "";
-//       });
-
-//       const actionsCell = row.insertCell();
-//       actionsCell.className = "px-4 py-2 border";
-
-//       const editButton = document.createElement("button");
-//       editButton.className = "bg-green-500 text-white px-2 py-1 rounded mr-2";
-//       editButton.textContent = "Edit";
-//       editButton.addEventListener("click", () => {
-//         if (!document.querySelector("form")) {
-//           const formRow = table.insertRow(row.rowIndex + 1);
-//           const formCell = formRow.insertCell();
-//           formCell.colSpan = 6;
-//           formCell.appendChild(addProductForm(product, index, formRow));
-//         }
-//       });
-//       actionsCell.appendChild(editButton);
-
-//       const addToStockButton = document.createElement("button");
-//       addToStockButton.className =
-//         "bg-blue-500 text-white px-2 py-1 rounded mr-2";
-//       addToStockButton.textContent = "Add to stock";
-//       addToStockButton.addEventListener("click", () => {
-//         if (!document.querySelector("form")) {
-//           const formRow = table.insertRow(row.rowIndex + 1);
-//           const formCell = formRow.insertCell();
-//           formCell.colSpan = 6;
-//           formCell.appendChild(addStockForm(product, formRow));
-//         }
-//       });
-//       actionsCell.appendChild(addToStockButton);
-
-//       const deleteButton = document.createElement("button");
-//       deleteButton.className = "bg-red-500 text-white px-2 py-1 rounded";
-//       deleteButton.textContent = "Delete";
-//       deleteButton.addEventListener("click", () => {
-//         products.splice(index, 1);
-//         saveProductsToLocalStorage(products);
-//         const app = document.getElementById("app");
-//         if (app) {
-//           app.removeChild(table);
-//           app.appendChild(createProductTable(products));
-//         }
-//       });
-//       actionsCell.appendChild(deleteButton);
-//     });
-
-//     return table;
-//   }
-
-//   function addProductForm(
-//     product?: Product,
-//     index?: number,
-//     formRow?: HTMLTableRowElement,
-//   ) {
-//     const form = document.createElement("form");
-//     form.className = "bg-white p-4 rounded shadow-md";
-//     ["name", "quantity", "description", "price"].forEach((field) => {
-//       const input = document.createElement("input");
-//       input.name = field;
-//       input.placeholder = field.charAt(0).toUpperCase() + field.slice(1);
-//       input.className = "block w-full mb-2 p-2 border rounded";
-//       if (field === "quantity") {
-//         input.type = "number";
-//         input.min = "0";
-//       } else if (field === "price") {
-//         input.type = "number";
-//         input.min = "0";
-//         input.step = "0.01";
-//       }
-//       if (product) {
-//         input.value = (product as any)[field];
-//       }
-//       form.appendChild(input);
-//     });
-
-//     const acceptButton = document.createElement("button");
-//     acceptButton.textContent = "Accept";
-//     acceptButton.type = "submit";
-//     acceptButton.className = "bg-blue-500 text-white px-4 py-2 rounded mr-2";
-//     form.appendChild(acceptButton);
-
-//     const cancelButton = document.createElement("button");
-//     cancelButton.textContent = "Cancel";
-//     cancelButton.type = "button";
-//     cancelButton.className = "bg-gray-500 text-white px-4 py-2 rounded";
-//     cancelButton.addEventListener("click", () => {
-//       if (formRow) {
-//         formRow.remove();
-//       } else {
-//         form.remove();
-//       }
-//     });
-//     form.appendChild(cancelButton);
-
-//     form.addEventListener("submit", (event) => {
-//       event.preventDefault();
-//       const formData = new FormData(form);
-//       const newProduct: Product = {
-//         name: formData.get("name") as string,
-//         description: formData.get("description") as string,
-//         price: parseFloat(formData.get("price") as string),
-//         quantity: parseInt(formData.get("quantity") as string, 10),
-//         status:
-//           parseInt(formData.get("quantity") as string, 10) > 0
-//             ? "Available"
-//             : "Not Available",
-//       };
-
-//       const products = getProductsFromLocalStorage();
-//       if (index !== undefined) {
-//         products[index] = newProduct;
-//       } else {
-//         products.push(newProduct);
-//       }
-//       saveProductsToLocalStorage(products);
-//       const existingTable = document.querySelector("table");
-//       const app = document.getElementById("app");
-//       if (existingTable && app) {
-//         app.removeChild(existingTable);
-//       }
-//       if (app) {
-//         app.appendChild(createProductTable(products));
-//       }
-//       if (formRow) {
-//         formRow.remove();
-//       } else {
-//         form.remove();
-//       }
-//     });
-
-//     return form;
-//   }
-
-//   function addStockForm(product: Product, formRow: HTMLTableRowElement) {
-//     const form = document.createElement("form");
-//     form.className = "bg-white p-4 rounded shadow-md";
-
-//     const input = document.createElement("input");
-//     input.name = "quantity";
-//     input.placeholder = "Quantity to add";
-//     input.type = "number";
-//     input.min = "0";
-//     input.className = "block w-full mb-2 p-2 border rounded";
-//     form.appendChild(input);
-
-//     const acceptButton = document.createElement("button");
-//     acceptButton.textContent = "Accept";
-//     acceptButton.type = "submit";
-//     acceptButton.className = "bg-blue-500 text-white px-4 py-2 rounded mr-2";
-//     form.appendChild(acceptButton);
-
-//     const cancelButton = document.createElement("button");
-//     cancelButton.textContent = "Cancel";
-//     cancelButton.type = "button";
-//     cancelButton.className = "bg-gray-500 text-white px-4 py-2 rounded";
-//     cancelButton.addEventListener("click", () => {
-//       formRow.remove();
-//     });
-//     form.appendChild(cancelButton);
-
-//     form.addEventListener("submit", (event) => {
-//       event.preventDefault();
-//       const formData = new FormData(form);
-//       const quantityToAdd = parseInt(formData.get("quantity") as string, 10);
-//       if (!isNaN(quantityToAdd) && quantityToAdd > 0) {
-//         product.quantity += quantityToAdd;
-//         const products = getProductsFromLocalStorage();
-//         const productIndex = products.findIndex((p) => p.name === product.name);
-//         if (productIndex !== -1) {
-//           products[productIndex].quantity = product.quantity;
-//         }
-//         saveProductsToLocalStorage(products);
-//         const existingTable = document.querySelector("table");
-//         const app = document.getElementById("app");
-//         if (existingTable && app) {
-//           app.removeChild(existingTable);
-//         }
-//         if (app) {
-//           app.appendChild(createProductTable(getProductsFromLocalStorage()));
-//         }
-//         formRow.remove();
-//       } else {
-//         alert("Invalid quantity");
-//       }
-//     });
-
-//     return form;
-//   }
-
-//   function renderPage() {
-//     const products = getProductsFromLocalStorage();
-
-//     const addButton = document.createElement("button");
-//     addButton.textContent = "Add Product";
-//     addButton.className = "bg-green-500 text-white px-4 py-2 rounded mt-4 mb-4";
-//     const table = createProductTable(products);
-
-//     addButton.addEventListener("click", () => {
-//       if (!document.querySelector("form")) {
-//         const form = addProductForm();
-//         addButton.parentNode?.insertBefore(form, addButton.nextSibling);
-//       }
-//     });
-
-//     const app = document.getElementById("app");
-//     if (app) {
-//       app.innerHTML = ""; // Clear previous content
-//       app.appendChild(addButton);
-//       app.appendChild(table);
-//     }
-//   }
-
-//   document.addEventListener("DOMContentLoaded", async () => {
-//     await new Promise((resolve) => setTimeout(resolve, 0)); // Ensure DOM is fully loaded
-//     renderPage();
-//   });
-
-//   window.addEventListener("popstate", () => {
-//     renderPage();
-//   });
-// }
-
-// inventoryPage();
-
-// export default inventoryPage;
-
 function inventoryPage() {
-  const app = document.getElementById("app");
-  if (app) {
-    const heading = document.createElement("h1");
-    heading.textContent = "Inventory Page";
-    heading.className = "text-2xl font-bold mb-4";
+  const inventoryMenu = document.getElementById("inventory-menu");
 
-    const paragraph = document.createElement("p");
-    paragraph.textContent = "Welcome to the inventory management system.";
-    paragraph.className = "mb-4";
+  if (inventoryMenu) {
+    const addButton = document.createElement("button");
+    addButton.textContent = "Add Product";
+    addButton.className = "bg-green-500 text-white px-4 py-2 rounded mb-4"; // Add some styling classes
+    inventoryMenu.appendChild(addButton);
 
-    app.appendChild(heading);
-    app.appendChild(paragraph);
+    const popup = document.createElement("div");
+    popup.style.display = "none";
+    popup.className =
+      "fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"; // Add some styling classes
+    popup.innerHTML = `
+      <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+      <label class="block mb-2">Product: <input type="text" id="product-name" class="border border-gray-300 p-2 rounded w-full"></label>
+      <label class="block mb-2">Quantity: <input type="number" id="product-quantity" class="border border-gray-300 p-2 rounded w-full"></label>
+      <label class="block mb-2">Price: <input type="number" id="product-price" step="0.01" class="border border-gray-300 p-2 rounded w-full"></label>
+      <label class="block mb-2">Description: <input type="text" id="product-description" class="border border-gray-300 p-2 rounded w-full"></label>
+      <label class="block mb-4">Location: 
+        <select id="product-location" class="border border-gray-300 p-2 rounded w-full">
+        <option value="Store">Store</option>
+        <option value="Warehouse">Warehouse</option>
+        </select>
+      </label>
+      <div class="flex justify-end">
+        <button id="accept-button" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Accept</button>
+        <button id="cancel-button" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+      </div>
+      </div>
+    `;
+    inventoryMenu.appendChild(popup);
+
+    addButton.addEventListener("click", () => {
+      popup.style.display = "flex";
+    });
+
+    document.getElementById("accept-button")?.addEventListener("click", () => {
+      const productName = (
+        document.getElementById("product-name") as HTMLInputElement
+      ).value;
+      const productQuantity = (
+        document.getElementById("product-quantity") as HTMLInputElement
+      ).valueAsNumber;
+      const productPrice = (
+        document.getElementById("product-price") as HTMLInputElement
+      ).valueAsNumber;
+      const productDescription = (
+        document.getElementById("product-description") as HTMLInputElement
+      ).value;
+      const productLocation = (
+        document.getElementById("product-location") as HTMLSelectElement
+      ).value;
+
+      const productStatus = productQuantity > 0 ? "Available" : "Unavailable";
+
+      const tableBody = document
+        .getElementById("inventory")
+        ?.querySelector("tbody");
+      if (tableBody) {
+        const newRow = tableBody.insertRow();
+        newRow.innerHTML = `
+          <td>${productName}</td>
+          <td>${productQuantity}</td>
+          <td>$${productPrice.toFixed(2)}</td>
+          <td>${productDescription}</td>
+          <td>${productStatus}</td>
+          <td>${productLocation}</td>
+        `;
+      }
+
+      let products = JSON.parse(localStorage.getItem("products") || "[]");
+      const existingProductIndex = products.findIndex(
+        (product: any) => product.name === productName,
+      );
+
+      if (existingProductIndex !== -1) {
+        products[existingProductIndex] = {
+          name: productName,
+          quantity: productQuantity,
+          price: productPrice,
+          description: productDescription,
+          status: productStatus,
+          location: productLocation,
+        };
+      } else {
+        products.push({
+          name: productName,
+          quantity: productQuantity,
+          price: productPrice,
+          description: productDescription,
+          status: productStatus,
+          location: productLocation,
+        });
+      }
+
+      localStorage.setItem("products", JSON.stringify(products));
+
+      popup.style.display = "none";
+    });
+
+    document.getElementById("cancel-button")?.addEventListener("click", () => {
+      popup.style.display = "none";
+    });
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  inventoryPage();
-});
+// document.addEventListener("DOMContentLoaded", () => {
+//   inventoryPage();
+// });
 
 export default inventoryPage;
