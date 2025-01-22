@@ -1,15 +1,15 @@
 import users from "../../data/users/login.json";
 interface User {
-    username: string;
-    password: string;
-  }
-  const appEl = document.body;
-  function checkLogin(): boolean {
-    const loggedIn = localStorage.getItem("loggedIn");
-    return loggedIn === "true";
-  }
-  function renderLoginForm() {
-    const formHtml = `
+  username: string;
+  password: string;
+}
+const appEl = document.body;
+function checkLogin(): boolean {
+  const loggedIn = localStorage.getItem("loggedIn");
+  return loggedIn === "true";
+}
+function renderLoginForm() {
+  const formHtml = `
           <div id="login-form" class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
               <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
                   <input type="text" id="username" placeholder="Username" class="mb-4 p-2 border border-gray-300 rounded w-full" />
@@ -19,37 +19,47 @@ interface User {
               </div>
           </div>
       `;
-    appEl.innerHTML = formHtml;
-    const loginButton =
-      document.querySelector<HTMLButtonElement>("#login-button");
-    loginButton!.addEventListener("click", handleLogin);
+  appEl.innerHTML = formHtml;
+  const loginButton =
+    document.querySelector<HTMLButtonElement>("#login-button");
+  const usernameInput = document.querySelector<HTMLInputElement>("#username");
+  const passwordInput = document.querySelector<HTMLInputElement>("#password");
+
+  loginButton!.addEventListener("click", handleLogin);
+  usernameInput!.addEventListener("keydown", handleKeyDown);
+  passwordInput!.addEventListener("keydown", handleKeyDown);
+}
+function handleKeyDown(event: KeyboardEvent) {
+  if (event.key === "Enter") {
+    handleLogin();
   }
-  function handleLogin() {
-    const usernameInput =
-      document.querySelector<HTMLInputElement>("#username")!.value;
-    const passwordInput =
-      document.querySelector<HTMLInputElement>("#password")!.value;
-    const errorMessage =
-      document.querySelector<HTMLParagraphElement>("#error-message");
-    const user = users.find(
-      (user: User) =>
-        user.username === usernameInput && user.password === passwordInput,
-    );
-    if (user) {
-      localStorage.setItem("loggedIn", "true");
-      location.reload();
-    } else {
-      errorMessage!.classList.remove("hidden");
-    }
+}
+function handleLogin() {
+  const usernameInput =
+    document.querySelector<HTMLInputElement>("#username")!.value;
+  const passwordInput =
+    document.querySelector<HTMLInputElement>("#password")!.value;
+  const errorMessage =
+    document.querySelector<HTMLParagraphElement>("#error-message");
+  const user = users.find(
+    (user: User) =>
+      user.username === usernameInput && user.password === passwordInput,
+  );
+  if (user) {
+    localStorage.setItem("loggedIn", "true");
+    location.reload();
+  } else {
+    errorMessage!.classList.remove("hidden");
   }
-  function initApp() {
-    if (checkLogin()) {
-      // User is logged in, initialize the app
-      // initRouter(appEl!);
-      // navigation(appEl!);
-    } else {
-      // User is not logged in, show login form
-      renderLoginForm();
-    }
+}
+function initApp() {
+  if (checkLogin()) {
+    // User is logged in, initialize the app
+    // initRouter(appEl!);
+    // navigation(appEl!);
+  } else {
+    // User is not logged in, show login form
+    renderLoginForm();
   }
-  export default initApp();
+}
+export default initApp();

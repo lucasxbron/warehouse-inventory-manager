@@ -15,4 +15,5 @@ initializeApp();
 // window.addEventListener("popstate", () => {
 //   navigateTo(window.location.pathname);
 // });
+
 initApp();
