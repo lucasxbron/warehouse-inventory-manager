@@ -1,0 +1,17 @@
+[
+    {
+        "username": "user",
+        "password": "password",
+        "imageLink": "http://example.com/placeholder_image.jpg"
+    },
+    {
+        "username": "admin",
+        "password": "admin123",
+        "imageLink": "http://example.com/admin_image.jpg"
+    },
+    {
+        "username": "guest",
+        "password": "guest",
+        "imageLink": "http://example.com/guest_image.jpg"
+    }
+]
