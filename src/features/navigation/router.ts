@@ -1,9 +1,11 @@
+// import notFoundPage from "../../pages/404";
 import dashboardPage from "../../pages/dashboard";
 import inventoryPage from "../../pages/inventory";
 
 const routes: { [key: string]: string } = {
   "/": "/src/pages/html/dashboard.html",
   "/inventory": "/src/pages/html/inventory.html",
+  // "*": "/src/pages/html/404.html",
 };
 
 export function navigateTo(url: string) {
@@ -12,7 +14,7 @@ export function navigateTo(url: string) {
 }
 
 function loadContent(url: string) {
-  const path = routes[url] || "404.html";
+  const path = routes[url] || "/src/pages/html/404.html";
   fetch(path)
     .then((response) => {
       if (!response.ok) {
@@ -38,11 +40,13 @@ export function initializePageLogic() {
   const currentPage = window.location.pathname;
 
   if (currentPage === "/inventory") {
-    // Initialize contact form logic
     inventoryPage();
   } else if (currentPage === "/") {
     dashboardPage();
   }
+  // else {
+  //   notFoundPage();
+  // }
   // Add more conditions for other pages as needed
 }
 
