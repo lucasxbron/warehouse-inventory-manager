@@ -1,5 +1,5 @@
 import "./css/index.css";
-import users from "./data/users/login.json";
+import initApp from "./features/navigation/login";
 import { navigateTo } from "./features/navigation/router";
 
 const initializeApp = () => {
@@ -15,3 +15,4 @@ initializeApp();
 // window.addEventListener("popstate", () => {
 //   navigateTo(window.location.pathname);
 // });
+initApp();
