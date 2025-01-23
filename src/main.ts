@@ -1,5 +1,5 @@
 import "./css/index.css";
-
+import appLogin from "./features/navigation/login";
 import { navigateTo } from "./features/navigation/router";
 import { loadHeader } from "./components/header";
 
@@ -16,3 +16,5 @@ initApp();
 window.addEventListener("popstate", () => {
   navigateTo(window.location.pathname);
 });
+
+appLogin();
