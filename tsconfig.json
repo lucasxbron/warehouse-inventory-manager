@@ -20,5 +20,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "trash/router.ts", "trash/routes.ts", "trash/navigation.ts", "trash/main-routing.ts", "trash/inventory-before-routing-update.ts"]
+  "include": ["src", "trash/router.ts", "trash/routes.ts", "trash/navigation.ts", "trash/main-routing.ts", "trash/inventory-before-routing-update.ts", "trash/routing.ts"]
 }

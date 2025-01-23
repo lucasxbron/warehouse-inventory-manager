@@ -1,17 +1,18 @@
 import "./css/index.css";
 
 import { navigateTo } from "./features/navigation/router";
+import { loadHeader } from "./components/header";
 
-const initializeApp = () => {
+const initApp = () => {
   // Load the header dynamically
-  // loadHeader();
+  loadHeader();
 
   // Load the initial content based on the current URL
   navigateTo(window.location.pathname);
 };
 
-initializeApp();
+initApp();
 
-// window.addEventListener("popstate", () => {
-//   navigateTo(window.location.pathname);
-// });
+window.addEventListener("popstate", () => {
+  navigateTo(window.location.pathname);
+});

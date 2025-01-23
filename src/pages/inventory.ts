@@ -1,11 +1,132 @@
+document.addEventListener("DOMContentLoaded", () => {
+  inventoryPage();
+});
+
 function inventoryPage() {
   const inventoryMenu = document.getElementById("inventory-menu");
 
   if (inventoryMenu) {
     const addButton = document.createElement("button");
     addButton.textContent = "Add Product";
-    addButton.className = "bg-green-500 text-white px-4 py-2 rounded mb-4";
+    addButton.className = "bg-green-500 text-white px-4 py-2 rounded mb-4 mx-2";
     inventoryMenu.appendChild(addButton);
+
+    const showFiltersButton = document.createElement("button");
+    showFiltersButton.textContent = "Show Filters";
+    showFiltersButton.className =
+      "bg-blue-500 text-white px-4 py-2 rounded mb-4 mx-2";
+    inventoryMenu.appendChild(showFiltersButton);
+
+    const statusFilter = document.createElement("select");
+    statusFilter.className = "border border-gray-300 p-2 rounded mb-4 mx-2";
+    const statusOptions = ["Any Status", "Available", "Unavailable"];
+    statusOptions.forEach((status) => {
+      const option = document.createElement("option");
+      option.value = status.toLowerCase().replace(" ", "-");
+      option.textContent = status;
+      statusFilter.appendChild(option);
+    });
+    inventoryMenu.appendChild(statusFilter);
+
+    const locationFilter = document.createElement("select");
+    locationFilter.className = "border border-gray-300 p-2 rounded mb-4 mx-2";
+    const locationOptions = ["All Locations", "Store", "Warehouse"];
+    locationOptions.forEach((location) => {
+      const option = document.createElement("option");
+      option.value = location.toLowerCase().replace(" ", "-");
+      option.textContent = location;
+      locationFilter.appendChild(option);
+    });
+    inventoryMenu.appendChild(locationFilter);
+
+    inventoryMenu.className = "pt-2 pl-2 bg-gray-100 rounded-lg shadow-md";
+
+    const searchInput = document.createElement("input");
+    searchInput.type = "text";
+    searchInput.placeholder = "Search Products";
+    searchInput.className = "border border-gray-300 p-2 rounded mb-4 mx-2";
+    inventoryMenu.appendChild(searchInput);
+
+    const filterContainer = document.createElement("div");
+    filterContainer.className = "hidden";
+    inventoryMenu.appendChild(filterContainer);
+
+    const quantityMinInput = document.createElement("input");
+    quantityMinInput.type = "number";
+    quantityMinInput.placeholder = "Min Quantity";
+    quantityMinInput.className = "border border-gray-300 p-2 rounded mb-4 mx-2";
+    filterContainer.appendChild(quantityMinInput);
+
+    const quantityMaxInput = document.createElement("input");
+    quantityMaxInput.type = "number";
+    quantityMaxInput.placeholder = "Max Quantity";
+    quantityMaxInput.className = "border border-gray-300 p-2 rounded mb-4 mx-2";
+    filterContainer.appendChild(quantityMaxInput);
+
+    const priceMinInput = document.createElement("input");
+    priceMinInput.type = "number";
+    priceMinInput.placeholder = "Min Price";
+    priceMinInput.className = "border border-gray-300 p-2 rounded mb-4 mx-2";
+    filterContainer.appendChild(priceMinInput);
+
+    const priceMaxInput = document.createElement("input");
+    priceMaxInput.type = "number";
+    priceMaxInput.placeholder = "Max Price";
+    priceMaxInput.className = "border border-gray-300 p-2 rounded mb-4 mx-2";
+    filterContainer.appendChild(priceMaxInput);
+
+    const filterProducts = () => {
+      const searchTerm = searchInput.value.toLowerCase();
+      const quantityMin = quantityMinInput.valueAsNumber || 0;
+      const quantityMax = quantityMaxInput.valueAsNumber || Infinity;
+      const priceMin = priceMinInput.valueAsNumber || 0;
+      const priceMax = priceMaxInput.valueAsNumber || Infinity;
+      const status = statusFilter.value;
+      const location = locationFilter.value;
+
+      const products = JSON.parse(localStorage.getItem("products") || "[]");
+      const tableBody = document
+        .getElementById("inventory")
+        ?.querySelector("tbody");
+      if (tableBody) {
+        tableBody.innerHTML = "";
+        products.forEach((product: any, index: number) => {
+          if (
+            (product.name.toLowerCase().includes(searchTerm) ||
+              product.description.toLowerCase().includes(searchTerm) ||
+              product.location.toLowerCase().includes(searchTerm)) &&
+            product.quantity >= quantityMin &&
+            product.quantity <= quantityMax &&
+            product.price >= priceMin &&
+            product.price <= priceMax &&
+            (status === "any-status" ||
+              product.status.toLowerCase() === status) &&
+            (location === "all-locations" ||
+              product.location.toLowerCase() === location)
+          ) {
+            addProductRow(index, product);
+          }
+        });
+      }
+    };
+
+    searchInput.addEventListener("input", filterProducts);
+    quantityMinInput.addEventListener("input", filterProducts);
+    quantityMaxInput.addEventListener("input", filterProducts);
+    priceMinInput.addEventListener("input", filterProducts);
+    priceMaxInput.addEventListener("input", filterProducts);
+    statusFilter.addEventListener("change", filterProducts);
+    locationFilter.addEventListener("change", filterProducts);
+
+    showFiltersButton.addEventListener("click", () => {
+      const isHidden = filterContainer.classList.contains("hidden");
+      filterContainer.classList.toggle("hidden", !isHidden);
+      showFiltersButton.textContent = isHidden
+        ? "Hide Filters"
+        : "Show Filters";
+    });
+
+    renderTable();
 
     const popup = document.createElement("div");
     popup.style.display = "none";
@@ -109,19 +230,21 @@ function inventoryPage() {
           status: productStatus,
           location: productLocation,
         };
+        updateProductRow(editingProductIndex, products[editingProductIndex]);
       } else {
-        products.push({
+        const newProduct = {
           name: productName,
           quantity: productQuantity,
           price: productPrice,
           description: productDescription,
           status: productStatus,
           location: productLocation,
-        });
+        };
+        products.push(newProduct);
+        addProductRow(products.length - 1, newProduct);
       }
 
       localStorage.setItem("products", JSON.stringify(products));
-      location.reload();
       popup.style.display = "none";
     });
 
@@ -136,7 +259,7 @@ function inventoryPage() {
           let products = JSON.parse(localStorage.getItem("products") || "[]");
           products.splice(productToDeleteIndex, 1);
           localStorage.setItem("products", JSON.stringify(products));
-          location.reload();
+          renderTable();
           deletePopup.style.display = "none";
         }
       });
@@ -159,7 +282,7 @@ function inventoryPage() {
           product.quantity += additionalQuantity;
           product.status = product.quantity > 0 ? "Available" : "Unavailable";
           localStorage.setItem("products", JSON.stringify(products));
-          location.reload();
+          updateProductRow(productToAddStockIndex, product);
           addStockPopup.style.display = "none";
         }
       });
@@ -171,36 +294,18 @@ function inventoryPage() {
       });
 
     // Load products from localStorage and populate the table
-    const products = JSON.parse(localStorage.getItem("products") || "[]");
+    renderTable();
+
+    // Load products from localStorage and populate the table
+    renderTable();
+
+    // Event delegation for edit, add stock, and delete buttons
     const tableBody = document
       .getElementById("inventory")
       ?.querySelector("tbody");
-    if (tableBody) {
-      products.forEach((product: any, index: number) => {
-        const newRow = tableBody.insertRow();
-        newRow.className = "bg-white border-b";
-        newRow.innerHTML = `
-          <td class="px-4 py-2">${product.name}</td>
-          <td class="px-4 py-2">${product.quantity}</td>
-          <td class="px-4 py-2">$${product.price.toFixed(2)}</td>
-          <td class="px-4 py-2">${product.description}</td>
-          <td class="px-4 py-2">${product.status}</td>
-          <td class="px-4 py-2">${product.location}</td>
-          <td class="px-4 py-2 flex space-x-2">
-            <button class="edit-button bg-yellow-500 text-white px-2 py-1 rounded" data-index="${index}">Edit</button>
-            <button class="add-stock-button bg-blue-500 text-white px-2 py-1 rounded" data-index="${index}">Add Stock</button>
-            <button class="delete-button bg-red-500 text-white px-2 py-1 rounded" data-index="${index}">Delete</button>
-          </td>
-        `;
-      });
-    }
-
-    // Event delegation for edit, add stock, and delete buttons
+    const products = JSON.parse(localStorage.getItem("products") || "[]");
     tableBody?.addEventListener("click", (event) => {
       const target = event.target as HTMLElement;
-      const row = target.closest("tr");
-      const productName = row?.querySelector("td:nth-child(1)")?.textContent;
-
       if (target.classList.contains("edit-button")) {
         const productIndex = parseInt(
           target.getAttribute("data-index") || "0",
@@ -240,10 +345,61 @@ function inventoryPage() {
       }
     });
   }
-}
 
-document.addEventListener("DOMContentLoaded", () => {
-  inventoryPage();
-});
+  function addProductRow(index: number, product: any) {
+    const tableBody = document
+      .getElementById("inventory")
+      ?.querySelector("tbody");
+    if (tableBody) {
+      const newRow = tableBody.insertRow();
+      newRow.setAttribute("data-index", index.toString());
+      newRow.className = "bg-white border-b";
+      newRow.innerHTML = `
+        <td class="px-4 py-2">${product.name}</td>
+        <td class="px-4 py-2">${product.quantity}</td>
+        <td class="px-4 py-2">$${product.price.toFixed(2)}</td>
+        <td class="px-4 py-2">${product.description}</td>
+        <td class="px-4 py-2">${product.status}</td>
+        <td class="px-4 py-2">${product.location}</td>
+        <td class="px-4 py-2 flex space-x-2">
+          <button class="edit-button bg-yellow-500 text-white px-2 py-1 rounded" data-index="${index}">Edit</button>
+          <button class="add-stock-button bg-blue-500 text-white px-2 py-1 rounded" data-index="${index}">Add Stock</button>
+          <button class="delete-button bg-red-500 text-white px-2 py-1 rounded" data-index="${index}">Delete</button>
+        </td>
+      `;
+    }
+  }
+
+  function updateProductRow(index: number, product: any) {
+    const tableBody = document
+      .getElementById("inventory")
+      ?.querySelector("tbody");
+    if (tableBody) {
+      const row = tableBody.querySelector(`tr[data-index="${index}"]`);
+      if (row) {
+        (row as HTMLTableRowElement).cells[0].textContent = product.name;
+        (row as HTMLTableRowElement).cells[1].textContent = product.quantity;
+        (row as HTMLTableRowElement).cells[2].textContent =
+          `$${product.price.toFixed(2)}`;
+        (row as HTMLTableRowElement).cells[3].textContent = product.description;
+        (row as HTMLTableRowElement).cells[4].textContent = product.status;
+        (row as HTMLTableRowElement).cells[5].textContent = product.location;
+      }
+    }
+  }
+
+  function renderTable() {
+    const products = JSON.parse(localStorage.getItem("products") || "[]");
+    const tableBody = document
+      .getElementById("inventory")
+      ?.querySelector("tbody");
+    if (tableBody) {
+      tableBody.innerHTML = "";
+      products.forEach((product: any, index: number) => {
+        addProductRow(index, product);
+      });
+    }
+  }
+}
 
 export default inventoryPage;
