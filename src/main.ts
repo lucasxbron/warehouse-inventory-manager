@@ -13,8 +13,8 @@ const initApp = () => {
 
 initApp();
 
-window.addEventListener("popstate", () => {
-  navigateTo(window.location.pathname);
-});
+// window.addEventListener("popstate", () => {
+//   navigateTo(window.location.pathname);
+// });
 
 appLogin();

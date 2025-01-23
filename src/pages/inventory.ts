@@ -296,16 +296,13 @@ function inventoryPage() {
     // Load products from localStorage and populate the table
     renderTable();
 
-    // Load products from localStorage and populate the table
-    renderTable();
-
     // Event delegation for edit, add stock, and delete buttons
     const tableBody = document
       .getElementById("inventory")
       ?.querySelector("tbody");
-    const products = JSON.parse(localStorage.getItem("products") || "[]");
     tableBody?.addEventListener("click", (event) => {
       const target = event.target as HTMLElement;
+      const products = JSON.parse(localStorage.getItem("products") || "[]");
       if (target.classList.contains("edit-button")) {
         const productIndex = parseInt(
           target.getAttribute("data-index") || "0",
