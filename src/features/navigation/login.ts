@@ -52,7 +52,7 @@ function handleLogin() {
     errorMessage!.classList.remove("hidden");
   }
 }
-function initApp() {
+function appLogin() {
   if (checkLogin()) {
     // User is logged in, initialize the app
     // initRouter(appEl!);
@@ -62,4 +62,4 @@ function initApp() {
     renderLoginForm();
   }
 }
-export default initApp();
+export default appLogin();

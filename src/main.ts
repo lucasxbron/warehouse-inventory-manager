@@ -1,19 +1,20 @@
 import "./css/index.css";
-import initApp from "./features/navigation/login";
+import appLogin from "./features/navigation/login";
 import { navigateTo } from "./features/navigation/router";
+import { loadHeader } from "./components/header";
 
-const initializeApp = () => {
+const initApp = () => {
   // Load the header dynamically
-  // loadHeader();
+  loadHeader();
 
   // Load the initial content based on the current URL
   navigateTo(window.location.pathname);
 };
 
-initializeApp();
-
-// window.addEventListener("popstate", () => {
-//   navigateTo(window.location.pathname);
-// });
-
 initApp();
+
+window.addEventListener("popstate", () => {
+  navigateTo(window.location.pathname);
+});
+
+appLogin();
