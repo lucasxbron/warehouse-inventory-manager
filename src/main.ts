@@ -2,6 +2,7 @@ import "./css/index.css";
 import appLogin from "./features/navigation/login";
 import { navigateTo } from "./features/navigation/router";
 import { loadHeader } from "./components/header";
+import { updateUserAvatar } from "./components/userAvatar";
 
 const initApp = () => {
   // Load the header dynamically
@@ -12,9 +13,9 @@ const initApp = () => {
 };
 
 initApp();
+appLogin();
+updateUserAvatar();
 
 // window.addEventListener("popstate", () => {
 //   navigateTo(window.location.pathname);
 // });
-
-appLogin();

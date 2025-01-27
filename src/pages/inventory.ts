@@ -54,25 +54,29 @@ function inventoryPage() {
     const quantityMinInput = document.createElement("input");
     quantityMinInput.type = "number";
     quantityMinInput.placeholder = "Min Quantity";
-    quantityMinInput.className = "border border-gray-300 p-2 rounded mb-4 mx-2";
+    quantityMinInput.className =
+      "border border-gray-300 p-2 rounded mb-4 mx-2 max-w-36";
     filterContainer.appendChild(quantityMinInput);
 
     const quantityMaxInput = document.createElement("input");
     quantityMaxInput.type = "number";
     quantityMaxInput.placeholder = "Max Quantity";
-    quantityMaxInput.className = "border border-gray-300 p-2 rounded mb-4 mx-2";
+    quantityMaxInput.className =
+      "border border-gray-300 p-2 rounded mb-4 mx-2 max-w-36";
     filterContainer.appendChild(quantityMaxInput);
 
     const priceMinInput = document.createElement("input");
     priceMinInput.type = "number";
     priceMinInput.placeholder = "Min Price";
-    priceMinInput.className = "border border-gray-300 p-2 rounded mb-4 mx-2";
+    priceMinInput.className =
+      "border border-gray-300 p-2 rounded mb-4 mx-2 max-w-36";
     filterContainer.appendChild(priceMinInput);
 
     const priceMaxInput = document.createElement("input");
     priceMaxInput.type = "number";
     priceMaxInput.placeholder = "Max Price";
-    priceMaxInput.className = "border border-gray-300 p-2 rounded mb-4 mx-2";
+    priceMaxInput.className =
+      "border border-gray-300 p-2 rounded mb-4 mx-2 max-w-36";
     filterContainer.appendChild(priceMaxInput);
 
     const filterProducts = () => {
@@ -133,7 +137,7 @@ function inventoryPage() {
     popup.className =
       "fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center";
     popup.innerHTML = `
-      <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
       <label class="block mb-2">Product: <input type="text" id="product-name" class="border border-gray-300 p-2 rounded w-full"></label>
       <label class="block mb-2">Quantity: <input type="number" id="product-quantity" class="border border-gray-300 p-2 rounded w-full"></label>
       <label class="block mb-2">Price: <input type="number" id="product-price" step="0.01" class="border border-gray-300 p-2 rounded w-full"></label>
@@ -157,7 +161,7 @@ function inventoryPage() {
     deletePopup.className =
       "fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center";
     deletePopup.innerHTML = `
-      <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <p class="mb-4">Are you sure you want to delete this product?</p>
         <div class="flex justify-end">
           <button id="confirm-delete-button" class="bg-red-500 text-white px-4 py-2 rounded mr-2">Delete</button>
@@ -172,7 +176,7 @@ function inventoryPage() {
     addStockPopup.className =
       "fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center";
     addStockPopup.innerHTML = `
-      <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <label class="block mb-2">Additional Quantity: <input type="number" id="additional-quantity" class="border border-gray-300 p-2 rounded w-full"></label>
         <div class="flex justify-end">
           <button id="add-stock-button" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Add</button>
@@ -353,16 +357,16 @@ function inventoryPage() {
       newRow.className = "bg-white border-b";
       newRow.innerHTML = `
         <td class="px-4 py-2">${product.name}</td>
+        <td class="px-4 py-2 flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
+          <button class="edit-button bg-yellow-500 text-white px-2 py-3 rounded sm:w-24 sm:py-1" data-index="${index}">Edit</button>
+          <button class="add-stock-button bg-blue-500 text-white px-2 py-1 rounded leading-5 sm:w-24" data-index="${index}">Add Stock</button>
+          <button class="delete-button bg-red-500 text-white px-2 py-3 rounded sm:w-24 sm:py-1" data-index="${index}">Delete</button>
+        </td>
         <td class="px-4 py-2">${product.quantity}</td>
         <td class="px-4 py-2">$${product.price.toFixed(2)}</td>
         <td class="px-4 py-2">${product.description}</td>
         <td class="px-4 py-2">${product.status}</td>
         <td class="px-4 py-2">${product.location}</td>
-        <td class="px-4 py-2 flex space-x-2">
-          <button class="edit-button bg-yellow-500 text-white px-2 py-1 rounded" data-index="${index}">Edit</button>
-          <button class="add-stock-button bg-blue-500 text-white px-2 py-1 rounded" data-index="${index}">Add Stock</button>
-          <button class="delete-button bg-red-500 text-white px-2 py-1 rounded" data-index="${index}">Delete</button>
-        </td>
       `;
     }
   }
@@ -375,12 +379,17 @@ function inventoryPage() {
       const row = tableBody.querySelector(`tr[data-index="${index}"]`);
       if (row) {
         (row as HTMLTableRowElement).cells[0].textContent = product.name;
-        (row as HTMLTableRowElement).cells[1].textContent = product.quantity;
-        (row as HTMLTableRowElement).cells[2].textContent =
+        (row as HTMLTableRowElement).cells[1].innerHTML = `
+          <button class="edit-button bg-yellow-500 text-white px-2 py-3 rounded sm:w-24" data-index="${index}">Edit</button>
+          <button class="add-stock-button bg-blue-500 text-white px-2 py-1 rounded leading-5 sm:w-24" data-index="${index}">Add Stock</button>
+          <button class="delete-button bg-red-500 text-white px-2 py-3 rounded sm:w-24" data-index="${index}">Delete</button>
+        `;
+        (row as HTMLTableRowElement).cells[2].textContent = product.quantity;
+        (row as HTMLTableRowElement).cells[3].textContent =
           `$${product.price.toFixed(2)}`;
-        (row as HTMLTableRowElement).cells[3].textContent = product.description;
-        (row as HTMLTableRowElement).cells[4].textContent = product.status;
-        (row as HTMLTableRowElement).cells[5].textContent = product.location;
+        (row as HTMLTableRowElement).cells[4].textContent = product.description;
+        (row as HTMLTableRowElement).cells[5].textContent = product.status;
+        (row as HTMLTableRowElement).cells[6].textContent = product.location;
       }
     }
   }

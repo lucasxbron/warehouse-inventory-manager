@@ -2,16 +2,11 @@
     {
         "username": "user",
         "password": "password",
-        "imageLink": "http://example.com/placeholder_image.jpg"
+        "avatar": "/src/public/images/avatars/user-avatar-1.jpeg"
     },
     {
         "username": "admin",
-        "password": "admin123",
-        "imageLink": "http://example.com/admin_image.jpg"
-    },
-    {
-        "username": "guest",
-        "password": "guest",
-        "imageLink": "http://example.com/guest_image.jpg"
+        "password": "password",
+        "avatar": "/src/public/images/avatars/user-avatar-2.jpeg"
     }
 ]
