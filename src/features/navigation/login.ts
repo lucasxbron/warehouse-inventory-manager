@@ -2,6 +2,7 @@ import users from "../../data/users/login.json";
 interface User {
   username: string;
   password: string;
+  avatar: string;
 }
 const appEl = document.body;
 function checkLogin(): boolean {
@@ -11,11 +12,13 @@ function checkLogin(): boolean {
 function renderLoginForm() {
   const formHtml = `
           <div id="login-form" class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-              <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
+              <div class="bg-white p-8 rounded shadow-md w-full max-w-sm mx-auto">
+                  <h1 class="text-2xl font-bold mb-1 text-center">Stockflow</h1>
+                  <img src="/src/public/images/stockflow-icon.png" alt="StockFlow Icon" class="mb-10 w-16 h-16 mx-auto" />
                   <input type="text" id="username" placeholder="Username" class="mb-4 p-2 border border-gray-300 rounded w-full" />
                   <input type="password" id="password" placeholder="Password" class="mb-4 p-2 border border-gray-300 rounded w-full" />
                   <button id="login-button" class="bg-blue-500 text-white p-2 rounded w-full">Login</button>
-                  <p id="error-message" class="text-red-500 mt-4 hidden">Incorrect username or password</p>
+                  <p id="error-message" class="text-red-500 mt-4 hidden text-center">Incorrect username or password</p>
               </div>
           </div>
       `;
@@ -24,7 +27,6 @@ function renderLoginForm() {
     document.querySelector<HTMLButtonElement>("#login-button");
   const usernameInput = document.querySelector<HTMLInputElement>("#username");
   const passwordInput = document.querySelector<HTMLInputElement>("#password");
-
   loginButton!.addEventListener("click", handleLogin);
   usernameInput!.addEventListener("keydown", handleKeyDown);
   passwordInput!.addEventListener("keydown", handleKeyDown);
@@ -47,6 +49,7 @@ function handleLogin() {
   );
   if (user) {
     localStorage.setItem("loggedIn", "true");
+    localStorage.setItem("avatar", user.avatar); // Save avatar in local storage
     location.reload();
   } else {
     errorMessage!.classList.remove("hidden");

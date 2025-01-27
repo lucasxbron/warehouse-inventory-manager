@@ -1,28 +1,23 @@
-<nav class="flex justify-between">
+<nav class="flex justify-between items-center bg-neutral-800 text-white"></nav>
   <ul class="flex items-center gap-4">
     <li class="flex items-center gap-3">
-      <img
-        src="/src/public/images/stockflow-icon.ico"
-        alt="Logo"
-        class="h-12 w-12 bg-slate-100 rounded-full"
-      />
-      <span class="text-xl font-bold">Stockflow</span>
+      <img src="/src/public/images/stockflow-icon.ico" alt="Logo" class="h-12 w-12 bg-slate-100 rounded-full" />
+      <span class="text-xl font-bold hidden sm:inline">Stockflow</span>
     </li>
-    <div class="flex items-center gap-4 mt-[4px] ml-4">
-      <li><a href="/" class="hover:text-gray-400">Dashboard</a></li>
-      <li>
-        <a href="/inventory" class="hover:text-gray-400">Retail Inventory</a>
+    <div class="flex items-center gap-6 mt-[4px] ml-4">
+      <li class="flex items-center gap-2">
+        <i class="fas fa-tachometer-alt text-2xl sm:text-base"></i>
+        <a href="/" class="hover:text-gray-400 hidden sm:inline">Dashboard</a>
+      </li>
+      <li class="flex items-center gap-2">
+        <i class="fas fa-box text-2xl sm:text-base"></i>
+        <a href="/inventory" class="hover:text-gray-400 hidden sm:inline">Retail Inventory</a>
       </li>
     </div>
-    <!-- <li><a href="/warehouse" class="hover:text-gray-400">Warehouse</a></li> -->
   </ul>
   <ul class="flex items-center">
     <li>
-      <button
-        id="user"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        User
+      <button id="user">
       </button>
     </li>
   </ul>
