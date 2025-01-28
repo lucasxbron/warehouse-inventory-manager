@@ -129,6 +129,23 @@ function inventoryPage() {
       }
     };
 
+    const resetFilters = () => {
+      searchInput.value = "";
+      quantityMinInput.value = "";
+      quantityMaxInput.value = "";
+      priceMinInput.value = "";
+      priceMaxInput.value = "";
+      statusFilter.value = "any-status";
+      locationFilter.value = "all-locations";
+      renderTable();
+    };
+
+    const resetButton = document.createElement("button");
+    resetButton.textContent = "Reset Filters";
+    resetButton.className = "bg-red-500 text-white px-4 py-2 rounded mb-4 mx-2";
+    resetButton.addEventListener("click", resetFilters);
+    inventoryMenu.appendChild(resetButton);
+
     searchInput.addEventListener("input", filterProducts);
     quantityMinInput.addEventListener("input", filterProducts);
     quantityMaxInput.addEventListener("input", filterProducts);
@@ -152,23 +169,23 @@ function inventoryPage() {
     popup.className =
       "fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center";
     popup.innerHTML = `
-      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-      <label class="block mb-2">Product: <input type="text" id="product-name" class="border border-gray-300 p-2 rounded w-full"></label>
-      <label class="block mb-2">Quantity: <input type="number" id="product-quantity" class="border border-gray-300 p-2 rounded w-full"></label>
-      <label class="block mb-2">Price: <input type="number" id="product-price" step="0.01" class="border border-gray-300 p-2 rounded w-full"></label>
-      <label class="block mb-2">Description: <input type="text" id="product-description" class="border border-gray-300 p-2 rounded w-full"></label>
-      <label class="block mb-4">Location: 
-        <select id="product-location" class="border border-gray-300 p-2 rounded w-full">
-        <option value="Store">Store</option>
-        <option value="Warehouse">Warehouse</option>
-        </select>
-      </label>
-      <div class="flex justify-end">
-        <button id="accept-button" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Accept</button>
-        <button id="cancel-button" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
-      </div>
-      </div>
-    `;
+            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <label class="block mb-2">Product: <input type="text" id="product-name" class="border border-gray-300 p-2 rounded w-full"></label>
+            <label class="block mb-2">Quantity: <input type="number" id="product-quantity" class="border border-gray-300 p-2 rounded w-full"></label>
+            <label class="block mb-2">Price: <input type="number" id="product-price" step="0.01" class="border border-gray-300 p-2 rounded w-full"></label>
+            <label class="block mb-2">Description: <input type="text" id="product-description" class="border border-gray-300 p-2 rounded w-full"></label>
+            <label class="block mb-4">Location: 
+              <select id="product-location" class="border border-gray-300 p-2 rounded w-full">
+              <option value="Store">Store</option>
+              <option value="Warehouse">Warehouse</option>
+              </select>
+            </label>
+            <div class="flex justify-end">
+              <button id="accept-button" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Accept</button>
+              <button id="cancel-button" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+            </div>
+            </div>
+          `;
     inventoryMenu.appendChild(popup);
 
     const deletePopup = document.createElement("div");
@@ -265,6 +282,7 @@ function inventoryPage() {
 
       localStorage.setItem("products", JSON.stringify(products));
       popup.style.display = "none";
+      filterProducts();
     });
 
     document.getElementById("cancel-button")?.addEventListener("click", () => {
@@ -303,6 +321,7 @@ function inventoryPage() {
           localStorage.setItem("products", JSON.stringify(products));
           updateProductRow(productToAddStockIndex, product);
           addStockPopup.style.display = "none";
+          filterProducts();
         }
       });
 
@@ -373,9 +392,15 @@ function inventoryPage() {
       newRow.innerHTML = `
         <td class="px-4 py-2">${product.name}</td>
         <td class="px-4 py-2 flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
-          <button class="edit-button bg-yellow-500 text-white px-2 py-3 rounded sm:w-24 sm:py-1" data-index="${index}">Edit</button>
-          <button class="add-stock-button bg-blue-500 text-white px-2 py-1 rounded leading-5 sm:w-24" data-index="${index}">Add Stock</button>
-          <button class="delete-button bg-red-500 text-white px-2 py-3 rounded sm:w-24 sm:py-1" data-index="${index}">Delete</button>
+          <button class="edit-button flex justify-center items-center bg-yellow-500 text-white px-2 py-3 rounded sm:w-24 sm:py-2" data-index="${index}">
+        <i class="fas fa-edit pointer-events-none"></i> <span class="hidden ml-1 lg:inline pointer-events-none">Edit</span>
+          </button>
+          <button class="add-stock-button flex justify-center items-center bg-blue-500 text-white px-2 py-3 rounded leading-5 sm:w-24 sm:py-2" data-index="${index}">
+        <i class="fas fa-plus pointer-events-none"></i> <span class="hidden ml-1 lg:inline pointer-events-none">Add</span>
+          </button>
+          <button class="delete-button flex justify-center items-center bg-red-500 text-white px-2 py-3 rounded sm:w-24 sm:py-2" data-index="${index}">
+        <i class="fas fa-trash pointer-events-none"></i> <span class="hidden ml-1 lg:inline pointer-events-none">Delete</span>
+          </button>
         </td>
         <td class="px-4 py-2">${product.quantity}</td>
         <td class="px-4 py-2">$${product.price.toFixed(2)}</td>
@@ -395,9 +420,15 @@ function inventoryPage() {
       if (row) {
         (row as HTMLTableRowElement).cells[0].textContent = product.name;
         (row as HTMLTableRowElement).cells[1].innerHTML = `
-          <button class="edit-button bg-yellow-500 text-white px-2 py-3 rounded sm:w-24 sm:py-1" data-index="${index}">Edit</button>
-          <button class="add-stock-button bg-blue-500 text-white px-2 py-1 rounded leading-5 sm:w-24" data-index="${index}">Add Stock</button>
-          <button class="delete-button bg-red-500 text-white px-2 py-3 rounded sm:w-24 sm:py-1" data-index="${index}">Delete</button>
+          <button class="edit-button flex justify-center items-center bg-yellow-500 text-white px-2 py-3 rounded sm:w-24 sm:py-2" data-index="${index}">
+        <i class="fas fa-edit pointer-events-none"></i> <span class="hidden ml-1 lg:inline pointer-events-none">Edit</span>
+          </button>
+          <button class="add-stock-button flex justify-center items-center bg-blue-500 text-white px-2 py-3 rounded leading-5 sm:w-24 sm:py-2" data-index="${index}">
+        <i class="fas fa-plus pointer-events-none"></i> <span class="hidden ml-1 lg:inline pointer-events-none">Add</span>
+          </button>
+          <button class="delete-button flex justify-center items-center bg-red-500 text-white px-2 py-3 rounded sm:w-24 sm:py-2" data-index="${index}">
+        <i class="fas fa-trash pointer-events-none"></i> <span class="hidden ml-1 lg:inline pointer-events-none">Delete</span>
+          </button>
         `;
         (row as HTMLTableRowElement).cells[2].textContent = product.quantity;
         (row as HTMLTableRowElement).cells[3].textContent =
