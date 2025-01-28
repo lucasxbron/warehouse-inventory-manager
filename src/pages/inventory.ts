@@ -1,7 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
-  inventoryPage();
-});
-
 function inventoryPage() {
   const inventoryMenu = document.getElementById("inventory-menu");
 
@@ -40,7 +36,6 @@ function inventoryPage() {
     inventoryMenu.appendChild(locationFilter);
 
     inventoryMenu.className = "pt-2 pl-2 bg-gray-100 rounded-lg shadow-md";
-
     const searchInput = document.createElement("input");
     searchInput.type = "text";
     searchInput.placeholder = "Search Products";
@@ -51,12 +46,22 @@ function inventoryPage() {
     filterContainer.className = "hidden";
     inventoryMenu.appendChild(filterContainer);
 
+    const quantityHeading = document.createElement("h3");
+    quantityHeading.textContent = "Quantity Range";
+    quantityHeading.className = "font-bold mb-2 mx-4";
+    filterContainer.appendChild(quantityHeading);
+
     const quantityMinInput = document.createElement("input");
     quantityMinInput.type = "number";
     quantityMinInput.placeholder = "Min Quantity";
     quantityMinInput.className =
-      "border border-gray-300 p-2 rounded mb-4 mx-2 max-w-36";
+      "border border-gray-300 p-2 rounded mb-4 mx-2 ml-5 max-w-36";
     filterContainer.appendChild(quantityMinInput);
+
+    const quantitySeparator = document.createElement("span");
+    quantitySeparator.textContent = "-";
+    quantitySeparator.className = "mx-2";
+    filterContainer.appendChild(quantitySeparator);
 
     const quantityMaxInput = document.createElement("input");
     quantityMaxInput.type = "number";
@@ -65,12 +70,22 @@ function inventoryPage() {
       "border border-gray-300 p-2 rounded mb-4 mx-2 max-w-36";
     filterContainer.appendChild(quantityMaxInput);
 
+    const priceHeading = document.createElement("h3");
+    priceHeading.textContent = "Price Range";
+    priceHeading.className = "font-bold mb-2 mx-4";
+    filterContainer.appendChild(priceHeading);
+
     const priceMinInput = document.createElement("input");
     priceMinInput.type = "number";
     priceMinInput.placeholder = "Min Price";
     priceMinInput.className =
-      "border border-gray-300 p-2 rounded mb-4 mx-2 max-w-36";
+      "border border-gray-300 p-2 rounded mb-4 mx-2 ml-5 max-w-36";
     filterContainer.appendChild(priceMinInput);
+
+    const priceSeparator = document.createElement("span");
+    priceSeparator.textContent = "-";
+    priceSeparator.className = "mx-2";
+    filterContainer.appendChild(priceSeparator);
 
     const priceMaxInput = document.createElement("input");
     priceMaxInput.type = "number";
@@ -380,9 +395,9 @@ function inventoryPage() {
       if (row) {
         (row as HTMLTableRowElement).cells[0].textContent = product.name;
         (row as HTMLTableRowElement).cells[1].innerHTML = `
-          <button class="edit-button bg-yellow-500 text-white px-2 py-3 rounded sm:w-24" data-index="${index}">Edit</button>
+          <button class="edit-button bg-yellow-500 text-white px-2 py-3 rounded sm:w-24 sm:py-1" data-index="${index}">Edit</button>
           <button class="add-stock-button bg-blue-500 text-white px-2 py-1 rounded leading-5 sm:w-24" data-index="${index}">Add Stock</button>
-          <button class="delete-button bg-red-500 text-white px-2 py-3 rounded sm:w-24" data-index="${index}">Delete</button>
+          <button class="delete-button bg-red-500 text-white px-2 py-3 rounded sm:w-24 sm:py-1" data-index="${index}">Delete</button>
         `;
         (row as HTMLTableRowElement).cells[2].textContent = product.quantity;
         (row as HTMLTableRowElement).cells[3].textContent =

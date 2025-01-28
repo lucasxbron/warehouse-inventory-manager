@@ -1,4 +1,6 @@
 import { setupNavigation } from "../features/navigation/router";
+import { updateUserAvatar } from "./userAvatar";
+import { initializeUserMenu } from "./userMenu";
 
 export function loadHeader() {
   fetch("/src/components/header.html")
@@ -13,6 +15,8 @@ export function loadHeader() {
       if (headerElement) {
         headerElement.innerHTML = data;
         setupNavigation();
+        updateUserAvatar();
+        initializeUserMenu();
       } else {
         console.error("Header element not found");
       }

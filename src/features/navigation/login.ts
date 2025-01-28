@@ -65,4 +65,4 @@ function appLogin() {
     renderLoginForm();
   }
 }
-export default appLogin();
+export default appLogin;
