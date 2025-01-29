@@ -13,7 +13,7 @@ function renderLoginForm() {
   const formHtml = `
           <div id="login-form" class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
               <div class="bg-white p-8 rounded shadow-md w-full max-w-sm mx-auto">
-                  <h1 class="text-2xl font-bold mb-1 text-center">Stockflow</h1>
+                  <h1 class="text-neutral-800 font-accent text-2xl italic font-bold mb-1 text-center">Stockflow</h1>
                   <img src="/src/public/images/stockflow-icon.png" alt="StockFlow Icon" class="mb-10 w-16 h-16 mx-auto" />
                   <input type="text" id="username" placeholder="Username" class="mb-4 p-2 border border-gray-300 rounded w-full" />
                   <input type="password" id="password" placeholder="Password" class="mb-4 p-2 border border-gray-300 rounded w-full" />
