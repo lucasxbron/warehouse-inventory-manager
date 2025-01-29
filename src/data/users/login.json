@@ -8,5 +8,10 @@
         "username": "admin",
         "password": "password",
         "avatar": "/src/public/images/avatars/user-avatar-2.jpeg"
+    },
+    {
+        "username": "",
+        "password": "",
+        "avatar": "/src/public/images/avatars/user-avatar-2.jpeg"
     }
 ]

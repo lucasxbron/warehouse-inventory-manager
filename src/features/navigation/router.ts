@@ -1,11 +1,11 @@
-// import notFoundPage from "../../pages/404";
 import dashboardPage from "../../pages/dashboard";
 import inventoryPage from "../../pages/inventory";
+import notFoundPage from "../../pages/404";
 
 const routes: { [key: string]: string } = {
   "/": "/src/pages/html/dashboard.html",
   "/inventory": "/src/pages/html/inventory.html",
-  // "*": "/src/pages/html/404.html",
+  "*": "/src/pages/html/404.html",
 };
 
 export function navigateTo(url: string) {
@@ -14,7 +14,7 @@ export function navigateTo(url: string) {
 }
 
 function loadContent(url: string) {
-  const path = routes[url] || "/src/pages/html/404.html";
+  const path = routes[url] || routes["*"];
   fetch(path)
     .then((response) => {
       if (!response.ok) {
@@ -39,15 +39,13 @@ function loadContent(url: string) {
 export function initializePageLogic() {
   const currentPage = window.location.pathname;
 
-  if (currentPage === "/inventory") {
-    inventoryPage();
-  } else if (currentPage === "/") {
+  if (currentPage === "/") {
     dashboardPage();
+  } else if (currentPage === "/inventory") {
+    inventoryPage();
+  } else {
+    notFoundPage();
   }
-  // else {
-  //   notFoundPage();
-  // }
-  // Add more conditions for other pages as needed
 }
 
 export function setupNavigation() {
@@ -60,9 +58,9 @@ export function setupNavigation() {
       }
     });
   });
-}
 
-// Handle browser back/forward navigation
-window.addEventListener("popstate", () => {
-  loadContent(window.location.pathname);
-});
+  // Handle browser back/forward buttons
+  window.addEventListener("popstate", () => {
+    loadContent(window.location.pathname);
+  });
+}
