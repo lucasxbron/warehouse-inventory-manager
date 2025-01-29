@@ -4,7 +4,7 @@ interface User {
   password: string;
   avatar: string;
 }
-const appEl = document.body;
+const bodyEl = document.body;
 function checkLogin(): boolean {
   const loggedIn = localStorage.getItem("loggedIn");
   return loggedIn === "true";
@@ -22,7 +22,7 @@ function renderLoginForm() {
               </div>
           </div>
       `;
-  appEl.innerHTML = formHtml;
+  bodyEl.innerHTML = formHtml;
   const loginButton =
     document.querySelector<HTMLButtonElement>("#login-button");
   const usernameInput = document.querySelector<HTMLInputElement>("#username");
@@ -36,6 +36,17 @@ function handleKeyDown(event: KeyboardEvent) {
     handleLogin();
   }
 }
+/**
+ * Handles the login process by validating the username and password input fields.
+ * If the credentials match a user in the `users` array, it sets the login status
+ * and user avatar in local storage and reloads the page. If the credentials do not match,
+ * it displays an error message.
+ *
+ * @remarks
+ * This function assumes that the `users` array and `User` type are defined elsewhere in the code.
+ * It also assumes that the HTML elements with IDs `#username`, `#password`, and `#error-message`
+ * exist in the DOM.
+ */
 function handleLogin() {
   const usernameInput =
     document.querySelector<HTMLInputElement>("#username")!.value;
@@ -57,9 +68,6 @@ function handleLogin() {
 }
 function appLogin() {
   if (checkLogin()) {
-    // User is logged in, initialize the app
-    // initRouter(appEl!);
-    // navigation(appEl!);
   } else {
     // User is not logged in, show login form
     renderLoginForm();

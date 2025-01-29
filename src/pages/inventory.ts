@@ -1,3 +1,5 @@
+import { addProductRow, updateProductRow } from "../components/utils";
+
 function inventoryPage() {
   const inventoryMenu = document.getElementById("inventory-menu");
 
@@ -14,7 +16,8 @@ function inventoryPage() {
     inventoryMenu.appendChild(showFiltersButton);
 
     const statusFilter = document.createElement("select");
-    statusFilter.className = "border border-gray-300 p-2 rounded mb-4 mx-2";
+    statusFilter.className =
+      "border border-gray-300 p-2 rounded mb-4 mx-2 focus:outline-gray-500";
     const statusOptions = ["Any Status", "Available", "Unavailable"];
     statusOptions.forEach((status) => {
       const option = document.createElement("option");
@@ -25,7 +28,8 @@ function inventoryPage() {
     inventoryMenu.appendChild(statusFilter);
 
     const locationFilter = document.createElement("select");
-    locationFilter.className = "border border-gray-300 p-2 rounded mb-4 mx-2";
+    locationFilter.className =
+      "border border-gray-300 p-2 rounded mb-4 mx-2 focus:outline-gray-500";
     const locationOptions = ["All Locations", "Store", "Warehouse"];
     locationOptions.forEach((location) => {
       const option = document.createElement("option");
@@ -39,7 +43,8 @@ function inventoryPage() {
     const searchInput = document.createElement("input");
     searchInput.type = "text";
     searchInput.placeholder = "Search Products";
-    searchInput.className = "border border-gray-300 p-2 rounded mb-4 mx-2";
+    searchInput.className =
+      "border border-gray-300 p-2 rounded mb-4 mx-2 focus:outline-blue-500";
     inventoryMenu.appendChild(searchInput);
 
     const filterContainer = document.createElement("div");
@@ -55,7 +60,7 @@ function inventoryPage() {
     quantityMinInput.type = "number";
     quantityMinInput.placeholder = "Min Quantity";
     quantityMinInput.className =
-      "border border-gray-300 p-2 rounded mb-4 mx-2 ml-5 max-w-36";
+      "border border-gray-300 p-2 rounded mb-4 mx-2 ml-5 max-w-36 focus:outline-blue-500";
     filterContainer.appendChild(quantityMinInput);
 
     const quantitySeparator = document.createElement("span");
@@ -67,7 +72,7 @@ function inventoryPage() {
     quantityMaxInput.type = "number";
     quantityMaxInput.placeholder = "Max Quantity";
     quantityMaxInput.className =
-      "border border-gray-300 p-2 rounded mb-4 mx-2 max-w-36";
+      "border border-gray-300 p-2 rounded mb-4 mx-2 max-w-36 focus:outline-blue-500";
     filterContainer.appendChild(quantityMaxInput);
 
     const priceHeading = document.createElement("h3");
@@ -79,7 +84,7 @@ function inventoryPage() {
     priceMinInput.type = "number";
     priceMinInput.placeholder = "Min Price";
     priceMinInput.className =
-      "border border-gray-300 p-2 rounded mb-4 mx-2 ml-5 max-w-36";
+      "border border-gray-300 p-2 rounded mb-4 mx-2 ml-5 max-w-36 focus:outline-blue-500";
     filterContainer.appendChild(priceMinInput);
 
     const priceSeparator = document.createElement("span");
@@ -91,7 +96,7 @@ function inventoryPage() {
     priceMaxInput.type = "number";
     priceMaxInput.placeholder = "Max Price";
     priceMaxInput.className =
-      "border border-gray-300 p-2 rounded mb-4 mx-2 max-w-36";
+      "border border-gray-300 p-2 rounded mb-4 mx-2 max-w-36 focus:outline-blue-500";
     filterContainer.appendChild(priceMaxInput);
 
     const filterProducts = () => {
@@ -109,6 +114,7 @@ function inventoryPage() {
         ?.querySelector("tbody");
       if (tableBody) {
         tableBody.innerHTML = "";
+        let hasResults = false;
         products.forEach((product: any, index: number) => {
           if (
             (product.name.toLowerCase().includes(searchTerm) ||
@@ -124,8 +130,17 @@ function inventoryPage() {
               product.location.toLowerCase() === location)
           ) {
             addProductRow(index, product);
+            hasResults = true;
           }
         });
+
+        if (!hasResults) {
+          const noResultsRow = tableBody.insertRow();
+          const noResultsCell = noResultsRow.insertCell(0);
+          noResultsCell.colSpan = 7;
+          noResultsCell.className = "text-center text-gray-500 py-4";
+          noResultsCell.textContent = "No search results found.";
+        }
       }
     };
 
@@ -298,6 +313,7 @@ function inventoryPage() {
           localStorage.setItem("products", JSON.stringify(products));
           renderTable();
           deletePopup.style.display = "none";
+          filterProducts();
         }
       });
 
@@ -331,10 +347,8 @@ function inventoryPage() {
         addStockPopup.style.display = "none";
       });
 
-    // Load products from localStorage and populate the table
     renderTable();
 
-    // Event delegation for edit, add stock, and delete buttons
     const tableBody = document
       .getElementById("inventory")
       ?.querySelector("tbody");
@@ -381,65 +395,6 @@ function inventoryPage() {
     });
   }
 
-  function addProductRow(index: number, product: any) {
-    const tableBody = document
-      .getElementById("inventory")
-      ?.querySelector("tbody");
-    if (tableBody) {
-      const newRow = tableBody.insertRow();
-      newRow.setAttribute("data-index", index.toString());
-      newRow.className = "bg-white border-b";
-      newRow.innerHTML = `
-        <td class="px-4 py-2">${product.name}</td>
-        <td class="px-4 py-2 flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
-          <button class="edit-button flex justify-center items-center bg-yellow-500 text-white px-2 py-3 rounded sm:w-24 sm:py-2" data-index="${index}">
-        <i class="fas fa-edit pointer-events-none"></i> <span class="hidden ml-1 lg:inline pointer-events-none">Edit</span>
-          </button>
-          <button class="add-stock-button flex justify-center items-center bg-blue-500 text-white px-2 py-3 rounded leading-5 sm:w-24 sm:py-2" data-index="${index}">
-        <i class="fas fa-plus pointer-events-none"></i> <span class="hidden ml-1 lg:inline pointer-events-none">Add</span>
-          </button>
-          <button class="delete-button flex justify-center items-center bg-red-500 text-white px-2 py-3 rounded sm:w-24 sm:py-2" data-index="${index}">
-        <i class="fas fa-trash pointer-events-none"></i> <span class="hidden ml-1 lg:inline pointer-events-none">Delete</span>
-          </button>
-        </td>
-        <td class="px-4 py-2">${product.quantity}</td>
-        <td class="px-4 py-2">$${product.price.toFixed(2)}</td>
-        <td class="px-4 py-2">${product.description}</td>
-        <td class="px-4 py-2">${product.status}</td>
-        <td class="px-4 py-2">${product.location}</td>
-      `;
-    }
-  }
-
-  function updateProductRow(index: number, product: any) {
-    const tableBody = document
-      .getElementById("inventory")
-      ?.querySelector("tbody");
-    if (tableBody) {
-      const row = tableBody.querySelector(`tr[data-index="${index}"]`);
-      if (row) {
-        (row as HTMLTableRowElement).cells[0].textContent = product.name;
-        (row as HTMLTableRowElement).cells[1].innerHTML = `
-          <button class="edit-button flex justify-center items-center bg-yellow-500 text-white px-2 py-3 rounded sm:w-24 sm:py-2" data-index="${index}">
-        <i class="fas fa-edit pointer-events-none"></i> <span class="hidden ml-1 lg:inline pointer-events-none">Edit</span>
-          </button>
-          <button class="add-stock-button flex justify-center items-center bg-blue-500 text-white px-2 py-3 rounded leading-5 sm:w-24 sm:py-2" data-index="${index}">
-        <i class="fas fa-plus pointer-events-none"></i> <span class="hidden ml-1 lg:inline pointer-events-none">Add</span>
-          </button>
-          <button class="delete-button flex justify-center items-center bg-red-500 text-white px-2 py-3 rounded sm:w-24 sm:py-2" data-index="${index}">
-        <i class="fas fa-trash pointer-events-none"></i> <span class="hidden ml-1 lg:inline pointer-events-none">Delete</span>
-          </button>
-        `;
-        (row as HTMLTableRowElement).cells[2].textContent = product.quantity;
-        (row as HTMLTableRowElement).cells[3].textContent =
-          `$${product.price.toFixed(2)}`;
-        (row as HTMLTableRowElement).cells[4].textContent = product.description;
-        (row as HTMLTableRowElement).cells[5].textContent = product.status;
-        (row as HTMLTableRowElement).cells[6].textContent = product.location;
-      }
-    }
-  }
-
   function renderTable() {
     const products = JSON.parse(localStorage.getItem("products") || "[]");
     const tableBody = document
@@ -447,9 +402,17 @@ function inventoryPage() {
       ?.querySelector("tbody");
     if (tableBody) {
       tableBody.innerHTML = "";
-      products.forEach((product: any, index: number) => {
-        addProductRow(index, product);
-      });
+      if (products.length === 0) {
+        const noEntriesRow = tableBody.insertRow();
+        const noEntriesCell = noEntriesRow.insertCell(0);
+        noEntriesCell.colSpan = 7;
+        noEntriesCell.className = "text-center text-gray-500 py-4";
+        noEntriesCell.textContent = "Please add a product to get started.";
+      } else {
+        products.forEach((product: any, index: number) => {
+          addProductRow(index, product);
+        });
+      }
     }
   }
 }
