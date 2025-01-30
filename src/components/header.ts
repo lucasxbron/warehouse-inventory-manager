@@ -3,7 +3,7 @@ import { updateUserAvatar } from "./userAvatar";
 import { initializeUserMenu } from "./userMenu";
 
 export function loadHeader() {
-  fetch("/src/components/header.html")
+  fetch("/public/html/header.html")
     .then((response) => {
       if (!response.ok) {
         throw new Error(`Failed to fetch header: ${response.statusText}`);

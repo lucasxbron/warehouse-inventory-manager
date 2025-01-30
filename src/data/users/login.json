@@ -2,16 +2,16 @@
     {
         "username": "user",
         "password": "password",
-        "avatar": "/src/public/images/avatars/user-avatar-1.jpeg"
+        "avatar": "/src/assets/images/avatars/user-avatar-1.jpeg"
     },
     {
         "username": "admin",
         "password": "password",
-        "avatar": "/src/public/images/avatars/user-avatar-2.jpeg"
+        "avatar": "/src/assets/images/avatars/user-avatar-2.jpeg"
     },
     {
         "username": "",
         "password": "",
-        "avatar": "/src/public/images/avatars/user-avatar-2.jpeg"
+        "avatar": "/src/assets/images/avatars/user-avatar-2.jpeg"
     }
 ]

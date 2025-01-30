@@ -1,4 +1,5 @@
 import users from "../../data/users/login.json";
+
 interface User {
   username: string;
   password: string;
@@ -14,7 +15,7 @@ function renderLoginForm() {
           <div id="login-form" class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
               <div class="bg-white p-8 rounded shadow-md w-full max-w-sm mx-auto">
                   <h1 class="text-neutral-800 font-accent text-2xl italic font-bold mb-1 text-center">Stockflow</h1>
-                  <img src="/src/public/images/stockflow-icon.png" alt="StockFlow Icon" class="mb-10 w-16 h-16 mx-auto" />
+                  <img src="/src/assets/images/stockflow-icon.png" alt="StockFlow Icon" class="mb-10 w-16 h-16 mx-auto" />
                   <input type="text" id="username" placeholder="Username" class="mb-4 p-2 border border-gray-300 rounded w-full" />
                   <input type="password" id="password" placeholder="Password" class="mb-4 p-2 border border-gray-300 rounded w-full" />
                   <button id="login-button" class="bg-blue-500 text-white p-2 rounded w-full">Login</button>

@@ -3,9 +3,9 @@ import inventoryPage from "../../pages/inventory";
 import notFoundPage from "../../pages/404";
 
 const routes: { [key: string]: string } = {
-  "/": "/src/pages/html/dashboard.html",
-  "/inventory": "/src/pages/html/inventory.html",
-  "*": "/src/pages/html/404.html",
+  "/": "/public/html/dashboard.html",
+  "/inventory": "/public/html/inventory.html",
+  "*": "/public/404.html",
 };
 
 export function navigateTo(url: string) {
