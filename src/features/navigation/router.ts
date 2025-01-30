@@ -30,7 +30,7 @@ function loadContent(url: string) {
         // Reinitialize page-specific scripts
         initializePageLogic();
       } else {
-        console.error("App element not found");
+        // console.error("App element not found");
       }
     })
     .catch((error) => console.error("Error loading content:", error));

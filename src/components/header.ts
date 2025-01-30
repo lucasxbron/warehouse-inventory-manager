@@ -18,7 +18,7 @@ export function loadHeader() {
         updateUserAvatar();
         initializeUserMenu();
       } else {
-        console.error("Header element not found");
+        // console.error("Header element not found");
       }
     })
     .catch((error) => console.error("Error loading header:", error));
