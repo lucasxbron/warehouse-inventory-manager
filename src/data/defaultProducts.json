@@ -1,0 +1,82 @@
+[
+  {
+    "name": "T-shirt",
+    "quantity": 12,
+    "price": 14.99,
+    "description": "A comfortable cotton T-shirt",
+    "status": "Available",
+    "location": "Store"
+  },
+  {
+    "name": "Jeans",
+    "quantity": 20,
+    "price": 39.99,
+    "description": "Stylish blue jeans",
+    "status": "Available",
+    "location": "Store"
+  },
+  {
+    "name": "Sneakers",
+    "quantity": 15,
+    "price": 59.99,
+    "description": "Comfortable running sneakers",
+    "status": "Unavailable",
+    "location": "Warehouse"
+  },
+  {
+    "name": "Jacket",
+    "quantity": 10,
+    "price": 89.99,
+    "description": "Warm winter jacket",
+    "status": "Available",
+    "location": "Store"
+  },
+  {
+    "name": "Hat",
+    "quantity": 25,
+    "price": 19.99,
+    "description": "Stylish summer hat",
+    "status": "Available",
+    "location": "Warehouse"
+  },
+  {
+    "name": "Socks",
+    "quantity": 50,
+    "price": 4.99,
+    "description": "Comfortable cotton socks",
+    "status": "Available",
+    "location": "Store"
+  },
+  {
+    "name": "Belt",
+    "quantity": 30,
+    "price": 24.99,
+    "description": "Leather belt",
+    "status": "Available",
+    "location": "Store"
+  },
+  {
+    "name": "Scarf",
+    "quantity": 18,
+    "price": 14.99,
+    "description": "Warm wool scarf",
+    "status": "Unavailable",
+    "location": "Warehouse"
+  },
+  {
+    "name": "Gloves",
+    "quantity": 22,
+    "price": 9.99,
+    "description": "Winter gloves",
+    "status": "Available",
+    "location": "Store"
+  },
+  {
+    "name": "Sunglasses",
+    "quantity": 12,
+    "price": 29.99,
+    "description": "Stylish sunglasses",
+    "status": "Available",
+    "location": "Store"
+  }
+]
