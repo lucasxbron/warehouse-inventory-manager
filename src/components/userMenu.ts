@@ -25,6 +25,8 @@ export async function initializeUserMenu() {
 
         logoutItem.addEventListener("click", () => {
           localStorage.setItem("loggedIn", "false");
+          history.pushState(null, "", "/");
+          window.dispatchEvent(new PopStateEvent("popstate"));
           location.reload();
         });
 
