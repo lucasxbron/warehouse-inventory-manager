@@ -17,7 +17,7 @@
   },
   {
     "name": "Sneakers",
-    "quantity": 15,
+    "quantity": 0,
     "price": 59.99,
     "description": "Comfortable running sneakers",
     "status": "Unavailable",
@@ -57,7 +57,7 @@
   },
   {
     "name": "Scarf",
-    "quantity": 18,
+    "quantity": 0,
     "price": 14.99,
     "description": "Warm wool scarf",
     "status": "Unavailable",
