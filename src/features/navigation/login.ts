@@ -10,6 +10,20 @@ function checkLogin(): boolean {
   const loggedIn = localStorage.getItem("loggedIn");
   return loggedIn === "true";
 }
+/**
+ * Renders the login form on the page by injecting the HTML structure into the body element.
+ * The form includes fields for username and password, a login button, and an error message.
+ * Adds event listeners to handle login button clicks and keydown events on the input fields.
+ *
+ * @remarks
+ * - The login form is styled using Tailwind CSS classes.
+ * - The error message is initially hidden and will be displayed if the login fails.
+ *
+ * @example
+ * ```typescript
+ * renderLoginForm();
+ * ```
+ */
 function renderLoginForm() {
   const formHtml = `
           <div id="login-form" class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
