@@ -1,5 +1,4 @@
 import users from "../../data/users/login.json";
-
 interface User {
   username: string;
   password: string;
@@ -10,30 +9,17 @@ function checkLogin(): boolean {
   const loggedIn = localStorage.getItem("loggedIn");
   return loggedIn === "true";
 }
-/**
- * Renders the login form on the page by injecting the HTML structure into the body element.
- * The form includes fields for username and password, a login button, and an error message.
- * Adds event listeners to handle login button clicks and keydown events on the input fields.
- *
- * @remarks
- * - The login form is styled using Tailwind CSS classes.
- * - The error message is initially hidden and will be displayed if the login fails.
- *
- * @example
- * ```typescript
- * renderLoginForm();
- * ```
- */
 function renderLoginForm() {
   const formHtml = `
           <div id="login-form" class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
               <div class="bg-white p-8 rounded shadow-md w-full max-w-sm mx-auto">
                   <h1 class="text-neutral-800 font-accent text-2xl italic font-bold mb-1 text-center">Stockflow</h1>
-                  <img src="/src/assets/images/stockflow-icon.png" alt="StockFlow Icon" class="mb-10 w-16 h-16 mx-auto" />
+                  <img src="/src/public/images/stockflow-icon.png" alt="StockFlow Icon" class="mb-10 w-16 h-16 mx-auto" />
                   <input type="text" id="username" placeholder="Username" class="mb-4 p-2 border border-gray-300 rounded w-full" />
                   <input type="password" id="password" placeholder="Password" class="mb-4 p-2 border border-gray-300 rounded w-full" />
                   <button id="login-button" class="bg-blue-500 text-white p-2 rounded w-full">Login</button>
                   <p id="error-message" class="text-red-500 mt-4 hidden text-center">Incorrect username or password</p>
+                  <p class="text-gray-600 text-sm mt-4 text-center">For demonstration purposes, just click login to enter.</p>
               </div>
           </div>
       `;
@@ -76,7 +62,8 @@ function handleLogin() {
   if (user) {
     localStorage.setItem("loggedIn", "true");
     localStorage.setItem("avatar", user.avatar); // Save avatar in local storage
-    location.reload();
+    // location.reload();
+    window.location.href = "/inventory";
   } else {
     errorMessage!.classList.remove("hidden");
   }
